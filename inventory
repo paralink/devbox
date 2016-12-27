@@ -1,0 +1,4 @@
+devbox ansible_connection=local
+
+[nodes]
+devbox

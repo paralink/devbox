@@ -1,0 +1,28 @@
+- name: deploy dotfiles
+  git: 
+    repo: "{{ DOTFILES_REPO }}" 
+    dest: "{{ HOME }}/.dotfiles"
+    key_file: "{{ HOME }}/.ssh/id_rsa" 
+    accept_hostkey: yes
+
+- file: 
+    src: "{{ HOME }}/.dotfiles/git/gitconfig" 
+    dest: "{{ HOME }}/.gitconfig"
+    state: link
+
+- file: 
+    src: "{{ HOME }}/.dotfiles/tmux/tmux.conf" 
+    dest: "{{ HOME }}/.tmux.conf"
+    state: link
+
+- file: path="{{ HOME }}/.emacs" state=absent
+
+- file: 
+    src: "{{ HOME }}/.dotfiles/emacs.d" 
+    dest: "{{ HOME }}/.emacs.d"
+    state: link
+
+- copy:
+    src: gitconfig.local
+    dest: "{{ HOME }}/.gitconfig.local"        
+    mode: "0600"

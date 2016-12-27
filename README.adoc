@@ -1,0 +1,20 @@
+== Prerequisite
+```
+vagrant plugin install vagrant-vbguest
+```
+
+== WTF
+
+Don't know why I need to provision twice.
+
+```
+vagrant up devbox
+```
+
+Above command will fail because of some sudo thing.
+
+Provision again will success.
+
+```
+vagrant provision devbox
+```
