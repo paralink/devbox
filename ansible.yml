@@ -2,18 +2,12 @@
 - hosts: nodes
   vars:
     HOSTNAME: devbox
-  become: true
-  become_user: "root"
-  roles:
-    - common
-
-- hosts: nodes
-  vars:
     USER: pl
     HOME: "/home/{{USER}}"
+    DIR_BIN: "{{ HOME }}/bin"
     DOTFILES_REPO: git@github.com:parallellink/dotfiles.git
   become: true
-  become_user: "{{ USER }}"
-#  become_method: sudo
+  become_user: root
   roles:
+    - common
     - dotfiles

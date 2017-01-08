@@ -1,6 +1,6 @@
 users:
   - name: pl
-    groups: pl,wheel
+    groups: pl
     password: saEZ6MlWYV9nQ #  python -c 'import crypt; print crypt.crypt("123", "salt")' 
     public_key: 'keys/pl.pub'
     private_key: 'keys/pl'
