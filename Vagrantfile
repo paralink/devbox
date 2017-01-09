@@ -2,10 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-#  config.vm.box = "ubuntu/yakkety64"
   config.vm.box = "fedora/25-cloud-base"
 
- config.vm.provision :ansible_local do |ansible|
+  config.vm.provision :ansible_local do |ansible|
       ansible.playbook       = 'ansible.yml'
       ansible.verbose        = 'vvvv'
       ansible.install        = true
@@ -18,10 +17,12 @@ Vagrant.configure("2") do |config|
 
     # vagrant plugin install vagrant-vbguest
     devbox.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    devbox.vm.synced_folder "./data", "/data", type: "virtualbox"
 
     devbox.vm.provider "virtualbox" do |vb|
-      vb.gui = false
-      vb.memory = "1024"
+      vb.gui    = false
+      vb.cpus   = 2
+      vb.memory = "2048"
     end
   end
 end

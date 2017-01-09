@@ -21,10 +21,6 @@
     - src
     - log
 
-
-- name: debug debug
-  raw: su vagrant -c "sudo -l > /tmp/ttt"
-
 ############
 # dotfiles #
 ############

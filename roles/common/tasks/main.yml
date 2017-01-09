@@ -12,12 +12,6 @@
     - zsh
     - emacs-nox
     - tmux
-    - zlib-devel
-    - ncurses-devel
-    - openssl-devel
-    - readline-devel
-    - libxml2-devel
-    - gnutls-devel
 
 ########
 # sudo #

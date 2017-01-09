@@ -1,2 +1,4 @@
-export EDITOR="emacsclient -c -a ''"
-alias emacs="emacsclient -c -a ''"
+EC="emacsclient -c -a ''"
+export EDITOR=$EC
+alias emacs=$EC
+alias vi=$EC
