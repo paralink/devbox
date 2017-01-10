@@ -78,6 +78,8 @@
     group: "{{ USER }}"
     state: link
 
+- file: path="{{ HOME }}/.emacs.d/custom.el" state=touch owner="{{ USER }}" group="{{ USER }}"
+
 ##############
 # zsh config #
 ##############
@@ -127,4 +129,3 @@
     owner: "{{ USER }}"
     group: "{{ USER }}"
     mode: "0700"
-
