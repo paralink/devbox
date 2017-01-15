@@ -3,12 +3,14 @@
   vars:
     HOSTNAME: devbox
     USER: pl
-    HOME: "/home/{{USER}}"
+    HOME: "/home/{{ USER }}"
     DIR_BIN: "{{ HOME }}/bin"
+    ZSHRCD: "{{ HOME }}/.zshrc.d"
     DOTFILES_REPO: git@github.com:parallellink/dotfiles.git
   become: true
   become_user: root
   roles:
-    - common
-    - dotfiles
-    - golang
+#    - common
+      #    - dotfiles
+      #    - golang
+    - haskell

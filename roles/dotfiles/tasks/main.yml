@@ -103,7 +103,7 @@
 
 - name: .zshrc.d
   file: 
-    path: "{{ HOME }}/.zshrc.d"
+    path: "{{ ZSHRCD }}" 
     owner: "{{ USER }}"
     group: "{{ USER }}"
     state: directory
