@@ -11,6 +11,6 @@
   become_user: root
   roles:
 #    - common
-      #    - dotfiles
-      #    - golang
+#    - dotfiles
+#    - golang
     - haskell

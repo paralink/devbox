@@ -12,6 +12,8 @@
     - zsh
     - emacs-nox
     - tmux
+    - ncurses-devel
+    - zlib-devel
 
 ########
 # sudo #
