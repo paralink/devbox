@@ -20,3 +20,6 @@
     - golang.org/x/tools/cmd/goimports
     - github.com/rogpeppe/godef
     - github.com/nsf/gocode
+    - golang.org/x/tools/cmd/gorename
+    - golang.org/x/tools/cmd/godoc
+    - golang.org/x/tools/cmd/guru
