@@ -1,4 +1,6 @@
 - name: install stack dependencies
+  become: true
+  become_user: root
   dnf: name="{{ item }}" state=latest
   with_items:
     - perl
@@ -14,10 +16,10 @@
     - gnupg
     - ncurses-compat-libs
 
-- name: create zshrc.d/haskell.sh            
+- name: haskell.sh            
   copy:
     src: haskell.sh
-    dest: "{{ ZSHRCD }}/haskell.sh"
+    dest: "{{ DIR_SHRC }}/haskell.sh"
     owner: "{{ USER }}"
     group: "{{ USER }}"
     mode: "0700"            
@@ -26,13 +28,9 @@
   register: haskell_stack_exists
 
 - name: install stack
-  become: true
-  become_user: "{{ USER }}"
   raw: "curl -sSL https://get.haskellstack.org | sh"
   when: haskell_stack_exists.stat.exists == False
 
 - name: stack setup
-  become: true
-  become_user: "{{ USER }}"
   raw: "/usr/local/bin/stack setup"
-#  when: haskell_stack_exists.stat.exists == False
+  when: haskell_stack_exists.stat.exists == False
