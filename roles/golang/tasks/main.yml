@@ -1,20 +1,10 @@
 - name: install golang
+  become: true
+  become_user: root
   dnf: name=golang state=latest
 
-- name: golang shell setting
-  become: true
-  become_user: "{{ USER }}"
-  template:
-    src: golang.sh.j2
-    dest: "{{ HOME }}/.zshrc.d/golang.sh"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    mode: "0700"
-
 - name: install golang tools
-  become: true
-  become_user: "{{ USER }}"
-  raw: "GOPATH={{ HOME }} go get -u {{ item }}"
+  raw: "GOPATH=$HOME go get -u {{ item }}"
   with_items:
     - github.com/golang/lint/golint
     - golang.org/x/tools/cmd/goimports
@@ -23,3 +13,7 @@
     - golang.org/x/tools/cmd/gorename
     - golang.org/x/tools/cmd/godoc
     - golang.org/x/tools/cmd/guru
+
+- name: golang shell setting
+  template:
+    src=golang.sh.j2 dest="{{ DIR_SHRC }}/golang.sh" mode="0700"

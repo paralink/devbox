@@ -35,4 +35,4 @@
   become: true
   become_user: "{{ USER }}"
   raw: "/usr/local/bin/stack setup"
-  when: haskell_stack_exists.stat.exists == False
+#  when: haskell_stack_exists.stat.exists == False

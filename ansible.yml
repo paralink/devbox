@@ -1,16 +1,23 @@
 ---
 - hosts: nodes
-  vars:
-    HOSTNAME: devbox
-    USER: pl
-    HOME: "/home/{{ USER }}"
-    DIR_BIN: "{{ HOME }}/bin"
-    ZSHRCD: "{{ HOME }}/.zshrc.d"
-    DOTFILES_REPO: git@github.com:parallellink/dotfiles.git
   become: true
   become_user: root
   roles:
-#    - common
-#    - dotfiles
-#    - golang
-    - haskell
+    - common
+
+- hosts: nodes
+  vars:
+    HOSTNAME: devbox
+    USER: pl
+    DIR_BIN: "$HOME/bin"
+    DIR_APP: "$HOME/app"
+    DIR_SRC: "$HOME/src"
+    DIR_LOG: "$HOME/log"
+    DIR_SHRC: "$HOME/.shrc.d"
+    DIR_DOTFILES: "$HOME/.dotfiles"
+    URL_DOTFILES: git@github.com:parallellink/dotfiles.git
+  become: true
+  become_user: "{{ USER }}"
+  roles:
+    - dotfiles
+    - golang

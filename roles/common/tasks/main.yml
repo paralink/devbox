@@ -6,6 +6,11 @@
 
 - hostname: name={{ HOSTNAME }}
 
+- name: update packages
+  become: true
+  become_user: root
+  raw: sudo dnf update -y
+
 - dnf: name="{{ item }}" state=latest
   with_items:
     - git
@@ -14,6 +19,7 @@
     - tmux
     - ncurses-devel
     - zlib-devel
+    - vim
 
 ########
 # sudo #

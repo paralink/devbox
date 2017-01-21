@@ -2,6 +2,8 @@
 # sudo #
 ########
 - name: create sudo file
+  become: true
+  become_user: root
   template:
     src: "{{ item }}-nopasswd.j2"
     dest: /etc/sudoers.d/{{ item }}-nopasswd
@@ -15,117 +17,63 @@
 # create directories #
 ######################
 - name: create my directories
-  file: path="{{ HOME }}/{{ item }}" owner={{ USER }} group={{ USER }} mode="0755" state=directory
+  file: path="{{ item }}" owner={{ USER }} group={{ USER }} mode="0755" state=directory
   with_items:
-    - bin
-    - src
-    - log
+    - "{{ DIR_APP }}"
+    - "{{ DIR_BIN }}"
+    - "{{ DIR_LOG }}"
+    - "{{ DIR_SRC }}"
 
 ############
 # dotfiles #
 ############
 - name: deploy dotfiles
-  become: true
-  become_user: "{{ USER }}"
-  git: 
-    repo: "{{ DOTFILES_REPO }}" 
-    dest: "{{ HOME }}/.dotfiles"
-    key_file: "{{ HOME }}/.ssh/id_rsa" 
-    accept_hostkey: yes
-
-##############
-# git config #
-##############
-- name: deploy gitconfig
-  file: 
-    src: "{{ HOME }}/.dotfiles/git/gitconfig" 
-    dest: "{{ HOME }}/.gitconfig"
-    state: link
+  git: repo="{{ URL_DOTFILES }}" dest="{{ DIR_DOTFILES }}" key_file="$HOME/.ssh/id_rsa" accept_hostkey=yes
 
 - name: gitconfig.local
   copy:
-    src: gitconfig.local
-    dest: "{{ HOME }}/.gitconfig.local"        
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    mode: "0600"
+    src=gitconfig.local dest="$HOME/.gitconfig.local" mode="0600"
 
-#############
-# tmux conf #
-#############
+- name: deploy gitconfig
+  file: src="{{ DIR_DOTFILES }}/git/gitconfig" dest="$HOME/.gitconfig" state=link
 
 - name: deploy tmux conf
-  become: true
-  become_user: "{{ USER }}"
-  file: 
-    src: "{{ HOME }}/.dotfiles/tmux/tmux.conf" 
-    dest: "{{ HOME }}/.tmux.conf"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    state: link
+  file: src="{{ DIR_DOTFILES }}/tmux/tmux.conf" dest="$HOME/.tmux.conf" state=link
 
 ################
 # emacs config #
 ################
 
-- file: path="{{ HOME }}/.emacs" state=absent
+- file: path="$HOME/.emacs" state=absent
 
 - name: emacs.d
-  file: 
-    src: "{{ HOME }}/.dotfiles/emacs.d" 
-    dest: "{{ HOME }}/.emacs.d"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    state: link
+  file: src="{{ DIR_DOTFILES }}/emacs.d" dest="$HOME/.emacs.d" state=link
 
-- file: path="{{ HOME }}/.emacs.d/custom.el" state=touch owner="{{ USER }}" group="{{ USER }}"
+- file: path="$HOME/.emacs.d/custom.el" state=touch
 
 ##############
 # zsh config #
 ##############
 - name: oh my zsh
-  become: true
-  become_user: "{{ USER }}"
-  git:
-    repo: git://github.com/robbyrussell/oh-my-zsh.git
-    dest: "{{ HOME }}/.oh-my-zsh"
+  git: repo="git://github.com/robbyrussell/oh-my-zsh.git" dest="$HOME/.oh-my-zsh"
 
 - name: delete default zshrc
-  file: path="{{ HOME }}/.zshrc" state=absent
+  file: path="$HOME/.zshrc" state=absent
 
 - name: .zshrc
-  file:
-    src: "{{ HOME }}/.dotfiles/oh-my-zsh/zshrc"
-    dest: "{{ HOME }}/.zshrc"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    state: link
+  file: src="{{ DIR_DOTFILES }}/oh-my-zsh/zshrc" dest="$HOME/.zshrc" state=link
 
-- name: .zshrc.d
-  file: 
-    path: "{{ ZSHRCD }}" 
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    state: directory
+- name: .shrc.d
+  file: path="{{ DIR_SHRC }}" state=directory
 
 ################
 # emacs config #
 ################
 - name: emacs server scripts
-  copy:
-    src: bin/{{ item }}
-    dest: "{{ DIR_BIN }}/{{ item }}"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    mode: "0700"
+  copy: src="bin/{{ item }}" dest="{{ DIR_BIN }}/{{ item }}" mode="0700"
   with_items:
     - emacs-server-start
     - emacs-server-stop
 
 - name: emacs shell script
-  copy:
-    src: zshrc.d/emacs.sh
-    dest: "{{ HOME }}/.zshrc.d/emacs.sh"
-    owner: "{{ USER }}"
-    group: "{{ USER }}"
-    mode: "0700"
+  copy: src="emacs.sh" dest="{{ DIR_SHRC }}/emacs.sh" mode="0700"
