@@ -4,7 +4,7 @@
   dnf: name=golang state=latest
 
 - name: install golang tools
-  raw: "GOPATH=$HOME go get -u {{ item }}"
+  raw: "GOPATH=$HOME/go go get -u {{ item }}"
   with_items:
     - github.com/golang/lint/golint
     - golang.org/x/tools/cmd/goimports
